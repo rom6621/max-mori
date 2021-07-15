@@ -1,26 +1,18 @@
 <template>
-  <v-container fluid>
-    <v-row justify="center">
-      <v-col cols="12" style="height: 1000px" class="overflow-y-auto">
-        <v-row v-for="comment in comments" :key="comment.id">
-          <v-col>
-            <v-card>
-              <v-card-title>{{ comment.contents }}</v-card-title>
-            </v-card>
-          </v-col>
-        </v-row>
+  <v-container fluid style="height: 100%">
+    <v-row justify="center" style="height: 80%" class="overflow-y-auto" id="chatBox">
+      <v-col cols="12" v-for="comment in comments" :key="comment.id">
+          <v-card>
+            <v-card-title>{{ comment.contents }}</v-card-title>
+          </v-card>
       </v-col>
-      <v-col cols="10">
-        <v-row>
-          <v-col cols="10">
-            <v-text-field v-model="textField"></v-text-field>
-          </v-col>
-          <v-col cols="2">
-            <v-btn fab dark absolute color="indigo" @click="submit">
-              <v-icon dark>mdi-send</v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="8">
+        <v-text-field v-model="textField"></v-text-field>
+      </v-col>
+      <v-col cols="2">
+        <v-btn fab dark absolute color="indigo" @click="submit"><v-icon dark>mdi-send</v-icon></v-btn>
       </v-col>
     </v-row>
   </v-container>

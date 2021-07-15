@@ -11,6 +11,9 @@
                   <v-icon>{{ sports[i-1].icon }}</v-icon>
                   {{ sports[i-1].name }}
                 </v-card-title>
+                <v-card-subtitle>
+                  過去10分の投票：{{ roomWeight[i-1] }}票
+                </v-card-subtitle>
               </v-card>
             </router-link>
           </v-col>
@@ -29,19 +32,10 @@ export default {
     rank: [],
     sports: sports,
   }),
+  props: ["roomWeight"],
   computed: {},
   method: {},
   mounted() {},
-  created() {
-    // firebase.database().ref("sports").get().then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //         this.sports=snapshot.val();
-    //     } else {
-    //         console.log("No data available");
-    //     }
-    //     }).catch((error) => {
-    //         console.error(error);
-    //     });
-  },
+  created() {},
 };
 </script>

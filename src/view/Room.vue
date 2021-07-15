@@ -1,40 +1,30 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="8">
+      <v-col>
         <v-card>
           <v-card-title>
-            <v-row>
-              <v-col cols="7">
-                <v-icon>{{ sports[roomId].icon }}</v-icon>
-                {{ sports[roomId].name }}
-              </v-col>
-              <v-col>
-                <v-spacer></v-spacer>
-              </v-col>
-              <v-col>
-                <v-btn color="error" block @click="moriBtn">盛り上がり!!</v-btn>
-              </v-col>
-            </v-row>
+            <v-icon>{{ sports[roomId-1].icon }}</v-icon>
+            {{ sports[roomId-1].name }}
+            <v-spacer></v-spacer>
+            <v-btn color="error" @click="moriBtn">盛り上がり!!</v-btn>
           </v-card-title>
-          <v-divider class="mx-4"></v-divider>
-          <Graph :chart-data="datacollection"></Graph>
         </v-card>
       </v-col>
-      <v-col cols="4">
-        <v-card>
-          <v-card-title>
-            <v-row>
-              <v-col>
-                チャット
-              </v-col>
-              <v-col>
-                <v-spacer></v-spacer>
-              </v-col>
-            </v-row>
-          </v-card-title>
+    </v-row>
+    <v-row>
+      <v-col cols="12" sm="8">
+        <v-card :height="height" v-if="true">
+          <v-card-title>グラフ</v-card-title>
           <v-divider class="mx-4"></v-divider>
-          <Chat :roomId="roomId"></Chat>
+          <Graph class="mt-5" :height="height-190" :room-id="roomId" :chart-data="datacollection"></Graph>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card :height="height" v-if="true">
+          <v-card-title>チャット</v-card-title>
+          <v-divider class="mx-4"></v-divider>
+          <Chat :room-id="roomId"></Chat>
         </v-card>
       </v-col>
     </v-row>
@@ -55,8 +45,9 @@ export default {
   },
   data: () => ({
     roomId: undefined,
+    height: window.innerHeight-180,
     sports: sports,
-    count: 0,
+    graphFlg: true,
     comments: [],
     datacollection: {
       labels: [
@@ -107,9 +98,16 @@ export default {
         weight: 1
       })
     },
+    switchDisplay: function() {
+      if(this.graphFlg) this.graphFlg=false
+      else this.graphFlg=true
+    }
   },
   created() {
     this.roomId = this.$route.params['id']
+  },
+  updated() {
+    document.getElementById('chatBox').scrollTo(0, document.getElementById('chatBox').scrollHeight)
   },
   mounted() {
     firebase.database().ref("rooms/" + this.roomId).on("value", (snapshot) => {
@@ -117,10 +115,18 @@ export default {
       this.comments = room.comments;
     })
     setInterval(()=> {
-      this.count++;
+      const weight = new Array(30)
+      weight.fill(0)
+      const now = Math.floor(Date.now()/(60*1000))
+      for(let key in this.comments) {
+        let comment = this.comments[key]
+        let difference = now-Math.floor(comment.createAt/(60*1000))
+        if(difference < 30){
+          weight[29-difference] += comment.weight
+        }
+      }
       this.datacollection = {
         labels: [
-          "30分前",
           "29分前",
           "28分前",
           "27分前",
@@ -150,15 +156,15 @@ export default {
           "3分前",
           "2分前",
           "1分前",
+          "0分前"
         ],
         datasets: [
           {
             label: "盛り上がり度",
-            data: [1, 2, this.count]
+            data: weight
           },
         ],
       }
-      console.log(this.datacollection.datasets[0].data);
     }, 1000)
   }
 }
