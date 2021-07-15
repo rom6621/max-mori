@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" style="height: 600px" class="overflow-y-auto">
+      <v-col cols="12" style="height: 1000px" class="overflow-y-auto">
         <v-row v-for="comment in comments" :key="comment.id">
           <v-col>
             <v-card>
