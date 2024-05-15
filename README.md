@@ -1,18 +1,19 @@
 # 最大盛り指数(max-mori)
 
 ## About
-This is hackathon project and improvemented by rom6621  
-  
+
+This is hackathon project and improvemented by rom6621
+
 Develop for Tokyo Olympic!!
 
-## URL
-https://maxmori-60d97.web.app/
-
 ## Project setup
+
 ```
 npm install
 ```
+
 create `firebaseConfig.json`
+
 ```
 {
   apiKey: "API_KEY",
@@ -27,11 +28,13 @@ create `firebaseConfig.json`
 ```
 
 ### Start with local server
+
 ```
 npm run serve
 ```
 
 ### Build
+
 ```
 npm run build
 ```
